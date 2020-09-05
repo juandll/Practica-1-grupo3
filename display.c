@@ -1,9 +1,8 @@
 
 int8_t convierta_a_Celsius(short adcval)
 {
-    unsigned int tempVal;
-    unsigned int tempOffset = 273;  //Segun el datasheet de calibracion se debe restar un valor de 273 para calibrar
-                                    //pero esto puede cambiar segun las condiciones de prueba
+    unsigned int tempVal; //Guarda valor temperatura en Celcius
+    unsigned int tempOffset = 273;  //Segun el datasheet de calibracion se debe restar un valor de 273
     int Vreff = 1.22; //El valor de voltaje de referencia sobre el canal es de 1.22V
     tempVal = (adcval - tempOffset)/Vreff;
     return tempVal; //Retorna el valor de temperatura en Celcius
