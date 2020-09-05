@@ -28,7 +28,7 @@ void D_Procese_display (D_Display *disp)
     }
 }
 
-void muestre_e_ndisplay(uint8_t digitoD  , uint8_t display , uint8_t digitoB )
+void muestre_en_display(uint8_t digitoD  , uint8_t display , uint8_t digitoB )
 {
     /*configura el puerto o los puertos que esten usando para si display*/
 
@@ -62,6 +62,7 @@ anodo o catodo?? prende con 1 o con 0??? prende con 1
 1=0b00000110  // muestro un 1
 
 */
+
 const int8_t tablaD[12]={0b11011100,0b00010000,0b11011100,0b10101100,0b01011000,0b11111000,0b11111100,0b10110000,0b11111100,0b11111000,0b00100000,0b11101100};/*del 0 al 9 y menos y error*/
 const int8_t tablaB[12]={0b00000001,0b00000001,0b00000001,0b00000001,0b00000000,0b00000000,0b00000000,0b00000001,0b00000001,0b00000001,0b00000000,0b00000000};/*del 0 al 9 y menos y error*/
 
