@@ -30,3 +30,16 @@ int8_t convierta_a_Celsius(short adcval)
     tempVal = (adcval - tempOffset)/Vreff;
     return tempVal; //Retorna el valor de temperatura en Celcius
 }
+
+int8_t saqueUnidades(int8_t tempVal)
+{
+    int8_t decenas= tempVal/10;       //Divide el valor de temperatura en 10 para hallar las decenas
+    unidades=tempVal - (10*decenas);  //Se restan las decenas al valor de temperatura para hallar las unidades
+    return unidades;                  //Retorna el valor de unidades
+}
+
+int8_t saqueDecenas(int8_t tempVal)
+{
+    int8_t decenas= tempVal/10;       //Divide el valor de temperatura en 10 para hallar las decenas
+    return decenas;                   //Retorna el valor de decenas
+}
