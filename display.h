@@ -29,7 +29,7 @@ struct D_Display
 
 //funciones para  procesar display
 void D_Procese_display (D_Display *disp);
-void muestre_e_ndisplay(uint8_t digitoD  , uint8_t display , uint8_t digitoB );
+void muestre_en_display(uint8_t digitoD  , uint8_t display , uint8_t digitoB );
 
 
 //funciones de  display
