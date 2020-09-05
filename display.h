@@ -20,21 +20,25 @@ typedef struct D_Display D_Display;
 
 struct D_Display
 {
-    int8_t *tempUnidades;
-    int8_t *tempDecenas;
+    int8_t *tempUnidadesD;
+    int8_t *tempUnidadesB;
+    int8_t *tempDecenasD;
+    int8_t *tempDecenasB;
     int8_t mostrando;
 };
 
 //funciones para  procesar display
 void D_Procese_display (D_Display *disp);
+void muestre_e_ndisplay(uint8_t digitoD  , uint8_t display , uint8_t digitoB );
 
 
 //funciones de  display
-void D_inicie_display (D_Display *disp,int8_t *tempUnidades,int8_t *tempDecenas);
+void D_inicie_display (D_Display *disp,int8_t *tempUnidadesD,int8_t *tempUnidadesB,int8_t *tempDecenasD,int8_t *tempDecenasB);
 void D_apague_display (D_Display *disp);
 
 //lector de tabla de lookup entra numero sale en BCD
-int8_t num2BCD(int8_t num);
+int8_t num2portD(int8_t num);
+int8_t num2portB(int8_t num);
 
 
 

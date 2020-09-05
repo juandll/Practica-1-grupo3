@@ -1,13 +1,16 @@
 #include "display.h"
 
-void DyC_Procese_ADC(int8_t *temperatura,int8_t *tempUnidades,int8_t *tempDecenas)
+void DyC_Procese_ADC(int8_t *temperatura,int8_t *tempUnidades,int8_t *tempDecenas,int8_t *tempUnidadesD,int8_t *tempUnidadesB,int8_t *tempDecenasD,int8_t *tempDecenasB)
 {
     short adcval=leaADC(); //Lectura del ADC
     *temperatura=convierta_a_Celsius(adcval); //Conversion del temperatura a Celcius
     *tempUnidades=saqueUnidades(*temperatura); //
     *tempDecenas=saqueDecenas(*temperatura);
-    *tempUnidades=num2BCD(*tempUnidades);
-    *tempDecenas=num2BCD(*tempDecenas);
+    *tempUnidadesD=num2portD(*tempUnidades);
+    *tempUnidadesB=num2portB(*tempUnidades);
+    *tempDecenasD=num2portD(*tempDecenas);
+    *tempDecenasB=num2portB(*tempDecenas);
+
 
     //no tengo retun :P
 }
