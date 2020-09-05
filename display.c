@@ -1,4 +1,14 @@
 
+int8_t convierta_a_Celsius(short adcval)
+{
+    unsigned int tempVal;
+    unsigned int tempOffset = 273;  //Segun el datasheet de calibracion se debe restar un valor de 273 para calibrar
+                                    //pero esto puede cambiar segun las condiciones de prueba
+    int Vreff = 1.22; //El valor de voltaje de referencia sobre el canal es de 1.22V
+    tempVal = (adcval - tempOffset)/Vreff;
+    return tempVal; //Retorna el valor de temperatura en Celcius
+}
+
 
 void D_inicie_display (D_Display *disp,int8_t *tempUnidades,int8_t *tempDecenas)
 {
@@ -47,9 +57,6 @@ void muestre_en_display(uint8_t digito  , uint8_t display )
         PUERTOBDISPDECENAS |= TRANDISPDECENAS;
     }
 }
-
-
-
 
 /*
      a
