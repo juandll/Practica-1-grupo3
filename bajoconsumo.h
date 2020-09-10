@@ -23,19 +23,21 @@ extern "C" {
 #define WATCHDOG 'G' 
 
 /*Estados Máquina*/
-#define ESTADO0 1
-#define ESTADO1 2
-#define ESTADO2 3
-#define ESTADO3 4
-#define ESTADO4 5
-#define ESTADO5 6
-#define ESTADO6 7
-#define ESTADO7 8
-#define ESTADO8 9
+typedef enum{
+    ESTADO0,
+    ESTADO1,
+    ESTADO2,
+    ESTADO3,
+    ESTADO4,
+    ESTADO5,
+    ESTADO6,
+    ESTADO7,
+    ESTADO8
+}ESTADOS;
 
 typedef struct Comunicacion Comunicacion;
 struct Comunicacion{
-    char estado;
+    ESTADOS estado;
     char tecla;
     char teclado_enable;
 };
