@@ -27,12 +27,7 @@ typedef enum{
     ESTADO0,
     ESTADO1,
     ESTADO2,
-    ESTADO3,
-    ESTADO4,
-    ESTADO5,
-    ESTADO6,
-    ESTADO7,
-    ESTADO8
+    ESTADO3
 }ESTADOS;
 
 typedef struct Comunicacion Comunicacion;
