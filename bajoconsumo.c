@@ -13,77 +13,63 @@ void Atencion_Bajo_Consumo(Comunicacion *com){
                 com->estado=ESTADO1;
             }
             else{
-                com->estado=ESTADO0;
+                if((com->tecla)==STANDBY_MODE){
+                    com->estado=ESTADO2;
+                }
+                else{
+                    if((com->tecla)==WAKEUP){
+                        com->estado=ESTADO3;
+                    }
+                    else
+                    {
+                        com->estado=ESTADO0;
+                    }
+                }
             }            
         break;
-        case ESTADO1: //Power mode = Power Down
+        case ESTADO1: //Power mode 
             if ((com->tecla)==DOWN){
                 Power_Down();
                 com->estado=ESTADO0;
             }
             else{
-                com->estado=ESTADO0;
+                if((com->tecla) == SAFE){
+                    Power_Safe();
+                    com->estado = ESTADO0;
+                }
+                else{
+                    com->estado=ESTADO0;
+                }         
             } 
         break;
-        case ESTADO2: //Power mode = Power Safe
-            if ((com->tecla)==SAFE){
-                Power_Safe();
-                com->estado=ESTADO0;
-            }
-            else{
-                com->estado=ESTADO0;
-            } 
-        break;
-        case ESTADO3: //Standby mode
-            if ((com->tecla)==STANDBY_MODE){
-                com->estado=ESTADO4;
-            }
-            else{
-                com->estado=ESTADO0;
-            } 
-        break;
-        case ESTADO4: //Standby mode = Standby
+        case ESTADO2: //Standby mode 
             if ((com->tecla)==STANDBY){
                 Standby();
                 com->estado=ESTADO0;
             }
             else{
-                com->estado=ESTADO0;
+                if((com->tecla)==EXTENDED_STANDBY){
+                    Extended_Standby();
+                    com->estado=ESTADO0;
+                }
+                else{
+                    com->estado=ESTADO0;
+                }
             } 
         break;
-        case ESTADO5: //Standby mode = Extended_Standby
-            if ((com->tecla)==STANDBY_MODE){
-                Extended_Standby();
-                com->estado=ESTADO0;
-            }
-            else{
-                com->estado=ESTADO0;
-            } 
-        break;
-        case ESTADO6: //WAKEUPPPP
-            if ((com->tecla)==WAKEUP){
-                com->estado=ESTADO7;
-            }
-            else{
-                com->estado=ESTADO0;
-            } 
-        break;
-        case ESTADO7: //Wakeup con External Reset
+        case ESTADO3: //Wakeup Mode
             if ((com->tecla)==EXTERNAL){
                 External_Reset_Flag();
                 com->estado=ESTADO0;
             }
             else{
-                com->estado=ESTADO0;
-            } 
-        break;
-        case ESTADO8: //Wakeup con Warchdog
-            if ((com->tecla)==WATCHDOG){
-                Watchdog_Function();
-                com->estado=ESTADO0;
-            }
-            else{
-                com->estado=ESTADO0;
+                if ((com->tecla)==WATCHDOG){
+                    Watchdog_Function();
+                    com->estado=ESTADO0;
+                }
+                else{
+                    com->estado=ESTADO0;
+                }
             } 
         break;
         default:
