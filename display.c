@@ -44,11 +44,12 @@ void muestre_en_display(uint8_t digitoD  , uint8_t display , uint8_t digitoB )
     if(display==UNIDADES){
         PORTB |= ~digitoB;
         PORTD |= ~digitoD;
-        PUERTODISPUNIDADES |= TRANDISPUNIDADES;
+        PORTB |= 0b00000010;
     }
     if(display==DECENAS){
-        PUERTODISPUNIDADES &= ~TRANDISPUNIDADES;
-        PUERTOBDISPDECENAS |= TRANDISPDECENAS;
+        PORTB |= ~digitoB;
+        PORTD |= ~digitoD;
+        PORTB |= 0b00000100;
     }
 }
 
