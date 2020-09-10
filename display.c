@@ -42,13 +42,13 @@ void muestre_en_display(uint8_t digitoD  , uint8_t display , uint8_t digitoB )
 
     /*y dependiendo del valor de display enciende el transistor correspondiente*/
     if(display==UNIDADES){
-        PORTB |= ~digitoB;
-        PORTD |= ~digitoD;
+        PORTB |= digitoB;
+        PORTD |= digitoD;
         PORTB |= 0b00000010;
     }
     if(display==DECENAS){
-        PORTB |= ~digitoB;
-        PORTD |= ~digitoD;
+        PORTB |= digitoB;
+        PORTD |= digitoD;
         PORTB |= 0b00000100;
     }
 }
