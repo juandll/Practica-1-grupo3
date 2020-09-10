@@ -1,6 +1,6 @@
 #include "bajoconsumo.h"
 
-char Hubo_Tecla(Comunicacion *tec_enable){
+char Hubo_Tecla_Serial(Comunicacion *tec_enable){
     return (tec_enable->teclado_enable & BANDERA_TECLAS_ON);
 }
 
