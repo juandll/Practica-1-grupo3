@@ -1,6 +1,7 @@
 #include "nuestrostimers.h"
 #include "display.h"
 #include "definiciones_y_configuraciones.h"
+#include "bajoconsumo.h"
 
 
 // En nuestra implementacion esta deberia ser un global 
@@ -13,6 +14,7 @@ void main (void)
     Tm_Periodico sondeoADC,sondeoDisplay;
     // suponemos que int8_t es un typedef de char entero con sigo de 8 bits
     D_Display disp;
+    Comunicacion teclado;
 
     int8_t temperatura;//ya va a estar en celsius
 
@@ -29,6 +31,10 @@ void main (void)
     for(;;)
     {
         //loop(..);
+        if(Hubo_Tecla_Serial(&teclado))
+        {
+            Atencion_Bajo_Consumo(&teclado);
+        }
         if(/*Condicion1 periodica de 1 ms*/)// supongamos que tenemos un timer por hardware de 1 ms
         {
             /*Atencion 1*/
