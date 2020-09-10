@@ -38,7 +38,7 @@ struct Comunicacion{
 };
 
 void Atencion_Bajo_Consumo(Comunicacion *com);
-char Hubo_Tecla(Comunicacion *tec_enable);
+char Hubo_Tecla_Serial(Comunicacion *tec_enable);
 
 #ifdef __cplusplus
 } // extern "C"
