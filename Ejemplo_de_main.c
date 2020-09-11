@@ -1,7 +1,7 @@
 #include "nuestrostimers.h"
 #include "display.h"
 #include "definiciones_y_configuraciones.h"
-#include "bajoconsumo.h"
+#include "serialutility.h"
 
 
 // En nuestra implementacion esta deberia ser un global 
@@ -16,8 +16,8 @@ void main (void)
     D_Display disp;
     Comunicacion teclado;
 
+    uint16_t ubrr=103; // valor para conseguir los 9600 baudios
     int8_t temperatura;//ya va a estar en celsius
-
     int8_t tempUnidades;//vamos a guardar las unidades
     int8_t tempUnidadesD;//vamos a guardar el BCD del puerto D unidades
     int8_t tempUnidadesB;//vamos a guardar el BCD del puerto B unidades
@@ -27,13 +27,14 @@ void main (void)
     Tm_Inicie_periodico (&sondeoADC,TIEMPOADC);// iniciar periodico de ADC
     Tm_Inicie_periodico (&sondeoDisplay,TIEMPODISPLAY);// iniciar periodico de Display
     D_inicie_display(&disp,&tempUnidadesD,&tempUnidadesB,&tempDecenasD,&tempDecenasB);
+    Su_inicie_uart(ubrr,&teclado);
 
     for(;;)
     {
         //loop(..);
-        if(Hubo_Tecla_Serial(&teclado))
+        if(Su_Hubo_Tecla_Serial(&teclado))
         {
-            Atencion_Bajo_Consumo(&teclado);
+            Su_Atencion_Bajo_Consumo(&teclado);
         }
         if(/*Condicion1 periodica de 1 ms*/)// supongamos que tenemos un timer por hardware de 1 ms
         {

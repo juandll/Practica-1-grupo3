@@ -1,77 +1,95 @@
-#include "bajoconsumo.h"
+#include "serialutility.h"
 
-char Hubo_Tecla_Serial(Comunicacion *tec_enable){
-    return (tec_enable->teclado_enable & BANDERA_TECLAS_ON);
+void Su_inicie_uart(uint16_t ubrr, Comunicacion *com)
+{
+    // Configuracion de la tasa a 9600
+    UBRR0L = (uint8_t)(ubrr & 0xFF);
+    UBRR0H = (uint8_t)(ubrr >> 8);
+
+    // se enciende la recepcion y transmision
+    UCSR0B |= (1 << RXEN0) | (1 << TXEN0);
+
+    //inicializacion de estados
+    com->estado=ESTADO0;
 }
 
-void Atencion_Bajo_Consumo(Comunicacion *com){
-    com->estado = ESTADO0;
+char Su_Hubo_Tecla_Serial(Comunicacion *tec_enable){
+    if(UCSR0A&(1<<7))
+    {
+        tec_enable->tecla = UDR0;
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+void Su_Atencion_Bajo_Consumo(Comunicacion *com){
     switch (com->estado)
     {
         case ESTADO0: //Verificar encendido
             if ((com->tecla)==POWER_MODE){
                 com->estado=ESTADO1;
             }
-            else{
-                if((com->tecla)==STANDBY_MODE){
-                    com->estado=ESTADO2;
-                }
-                else{
-                    if((com->tecla)==WAKEUP){
-                        com->estado=ESTADO3;
-                    }
-                    else
-                    {
-                        com->estado=ESTADO0;
-                    }
-                }
-            }            
+            else if((com->tecla)==STANDBY_MODE){
+                 com->estado=ESTADO2;
+            }
+            else if((com->tecla)==WAKEUP){
+                 
+                 com->estado=ESTADO3;
+             }
+             else
+             {
+                  com->estado=ESTADO0;
+             }
+                
+                       
         break;
+
         case ESTADO1: //Power mode 
             if ((com->tecla)==DOWN){
                 Power_Down();
                 com->estado=ESTADO0;
             }
-            else{
-                if((com->tecla) == SAFE){
-                    Power_Safe();
-                    com->estado = ESTADO0;
+            else if((com->tecla) == SAFE){
+                Power_Safe();
+                com->estado = ESTADO0;
                 }
-                else{
-                    com->estado=ESTADO0;
+             else{
+                com->estado=ESTADO0;
                 }         
-            } 
+            
         break;
+        
         case ESTADO2: //Standby mode 
             if ((com->tecla)==STANDBY){
                 Standby();
                 com->estado=ESTADO0;
             }
+            else if((com->tecla)==EXTENDED_STANDBY){
+                Extended_Standby();
+                com->estado=ESTADO0;
+                }
             else{
-                if((com->tecla)==EXTENDED_STANDBY){
-                    Extended_Standby();
-                    com->estado=ESTADO0;
+                com->estado=ESTADO0;
                 }
-                else{
-                    com->estado=ESTADO0;
-                }
-            } 
         break;
+
         case ESTADO3: //Wakeup Mode
             if ((com->tecla)==EXTERNAL){
                 External_Reset_Flag();
                 com->estado=ESTADO0;
             }
-            else{
-                if ((com->tecla)==WATCHDOG){
-                    Watchdog_Function();
-                    com->estado=ESTADO0;
+            else if ((com->tecla)==WATCHDOG){
+                Watchdog_Function();
+                com->estado=ESTADO0;
                 }
-                else{
-                    com->estado=ESTADO0;
-                }
-            } 
+             else{
+                 com->estado=ESTADO0;
+                } 
         break;
+
         default:
         break;
     }
