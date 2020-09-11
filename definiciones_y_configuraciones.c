@@ -1,4 +1,5 @@
 #include "display.h"
+#include "definiciones_y_configuraciones.h"
 #include <avr/io.h>
 
 short leaADC()
@@ -17,9 +18,7 @@ short leaADC()
 int8_t convierta_a_Celsius(short adcval)
 {
     int8_t tempVal; //Guarda valor temperatura en Celcius
-    short tempOffset = 273;  //Segun el datasheet de calibracion se debe restar un valor de 273
-    //int Vreff = 1.22; //El valor de voltaje de referencia sobre el canal es de 1.22V
-    tempVal = (adcval - tempOffset)/1.22;
+    tempVal = (adcval - TEMPOFFSET)/VREFF;
     return tempVal; //Retorna el valor de temperatura en Celcius
 }
 
