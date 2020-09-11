@@ -1,4 +1,6 @@
 #include "nuestrostimers.h"
+#include <avr/io.h>
+
 // struct Tm_Periodico
 // {
 // unsigned int	contador,

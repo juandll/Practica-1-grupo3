@@ -1,4 +1,5 @@
 #include "serialutility.h"
+#include <avr/io.h>
 
 void Su_inicie_uart(uint16_t ubrr, Comunicacion *com)
 {

@@ -37,8 +37,8 @@ void D_inicie_display (D_Display *disp,int8_t *tempUnidadesD,int8_t *tempUnidade
 void D_apague_display (D_Display *disp);
 
 //lector de tabla de lookup entra numero sale en BCD
-int8_t num2portD(int8_t num);
-int8_t num2portB(int8_t num);
+int8_t D_num2portD(int8_t num);
+int8_t D_num2portB(int8_t num);
 
 
 

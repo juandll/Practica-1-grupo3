@@ -3,14 +3,30 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "C:\\WinAVR-20100110\\avr\\include"
             ],
             "defines": [
                 "_DEBUG",
                 "UNICODE",
                 "_UNICODE"
             ],
-            "intelliSenseMode": "msvc-x64"
+            "compilerPath": "D:\\aplications\\CodeBlocks\\MinGW\\bin\\gcc.exe",
+            "cStandard": "gnu11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "gcc-x86"
+        },
+        {
+            "name": "AVR",
+            "intelliSenseMode": "${default}",
+            "cStandard": "c11",
+            "cppStandard": "c++14",
+            "compilerPath": "c:\\WinAVR-20100110\\bin\\avr-c++.exe",
+            "includePath": [],
+            "compilerArgs": [
+                "-mmcu=atmega328p      [c:\\winavr-20100110\\bin\\avrdude.conf:8547]",
+                "-DF_CPU=16000000UL"
+            ]
         }
     ],
     "version": 4

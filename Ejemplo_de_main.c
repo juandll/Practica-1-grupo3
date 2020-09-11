@@ -1,3 +1,5 @@
+#include <avr/io.h>
+#include <avr/interrupt.h>
 #include "nuestrostimers.h"
 #include "display.h"
 #include "definiciones_y_configuraciones.h"
@@ -28,6 +30,7 @@ void main (void)
     Tm_Inicie_periodico (&sondeoDisplay,TIEMPODISPLAY);// iniciar periodico de Display
     D_inicie_display(&disp,&tempUnidadesD,&tempUnidadesB,&tempDecenasD,&tempDecenasB);
     Su_inicie_uart(ubrr,&teclado);
+    T_inicie_timer();
 
     for(;;)
     {
@@ -36,7 +39,7 @@ void main (void)
         {
             Su_Atencion_Bajo_Consumo(&teclado);
         }
-        if(/*Condicion1 periodica de 1 ms*/)// supongamos que tenemos un timer por hardware de 1 ms
+        if(TIMER0_COMPA_vect)// supongamos que tenemos un timer por hardware de 1 ms
         {
             /*Atencion 1*/
             //reseteamos el timer

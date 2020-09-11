@@ -1,5 +1,6 @@
 
 #include "display.h"
+#include <avr/io.h>
 
 void D_inicie_display (D_Display *disp,int8_t *tempUnidadesD,int8_t *tempUnidadesB,int8_t *tempDecenasD,int8_t *tempDecenasB)
 {
@@ -68,14 +69,14 @@ anodo o catodo?? prende con 1 o con 0??? prende con 1
 const int8_t tablaD[12]={0b11011100,0b00010000,0b11011100,0b10101100,0b01011000,0b11111000,0b11111100,0b10110000,0b11111100,0b11111000,0b00100000,0b11101100};/*del 0 al 9 y menos y error*/
 const int8_t tablaB[12]={0b00000001,0b00000001,0b00000001,0b00000001,0b00000000,0b00000000,0b00000000,0b00000001,0b00000001,0b00000001,0b00000000,0b00000000};/*del 0 al 9 y menos y error*/
 
-int8_t num2portD(int8_t num)
+int8_t D_num2portD(int8_t num)
 {
     if(num>=12||num<0)
         return tablaD[11];/*en la pos 11 de la tabla esta el error*/
     return tablaD[num];
 }
 
-int8_t num2portB(int8_t num)
+int8_t D_num2portB(int8_t num)
 {
     if(num>=12||num<0)
         return tablaB[11];/*en la pos 11 de la tabla esta el error*/
