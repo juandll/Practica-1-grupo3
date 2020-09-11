@@ -2,16 +2,23 @@
 #include "definiciones_y_configuraciones.h"
 #include <avr/io.h>
 
-short leaADC()
+void DyC_inicialice_ADC()
 {
     ADMUX = 0x00; 
     ADCSRA = 0x00;
 
     ADMUX |= 0b00001000;  // ADMUX 8,  0b00001000
     ADMUX |= 0b11000000;  // REF 1.1V, 0b11000000
-    ADCSRA |= 0b11000111; //preescalización de 128 (1 << ADPS2)(1 << ADPS1)(1 << ADEN) e inicia la conversión (1 << ADSC)
-    while(ADCSRA & (1 << ADSC)); // Entra al loop cuando está realizando la conversión, sale cuando la termina
-    short adcval= (ADCL | (ADCH << 8)); //Guarda el dato de los registros de datos del ADC 
+    ADCSRA |= 0b10000111; //preescalización de 128 (1 << ADPS2)(1 << ADPS1)(1 << ADEN)
+}
+
+void DyC_empiece_ADC()
+{
+    ADCSRA |= 0b01000000; // inicia la conversión (1 << ADSC)
+}
+
+short leaADC(){
+    short adcval= (ADCL | (ADCH << 8)); // Toma el valor del bus de datos ADC
     return adcval;
 }
 
@@ -37,14 +44,14 @@ int8_t saqueDecenas(int8_t tempVal)
 
 void DyC_Procese_ADC(int8_t *temperatura,int8_t *tempUnidades,int8_t *tempDecenas,int8_t *tempUnidadesD,int8_t *tempUnidadesB,int8_t *tempDecenasD,int8_t *tempDecenasB)
 {
-    short adcval=leaADC(); //Lectura del ADC
+    short adcval= leaADC(); //Lectura del ADC
     *temperatura=convierta_a_Celsius(adcval); //Conversion del temperatura a Celcius
-    *tempUnidades=saqueUnidades(*temperatura); //
-    *tempDecenas=saqueDecenas(*temperatura);
-    *tempUnidadesD=D_num2portD(*tempUnidades);
-    *tempUnidadesB=D_num2portB(*tempUnidades);
-    *tempDecenasD=D_num2portD(*tempDecenas);
-    *tempDecenasB=D_num2portB(*tempDecenas);
+    *tempUnidades=saqueUnidades(*temperatura); //Saca las unidades del valor de temperatura
+    *tempDecenas=saqueDecenas(*temperatura); //Saca las decenas del valor de temperatura
+    *tempUnidadesD=D_num2portD(*tempUnidades); //Saca el valor de unidades de la tabla de look up para el puerto D
+    *tempUnidadesB=D_num2portB(*tempUnidades); //Saca el valor de unidades de la tabla de look up para el puerto B
+    *tempDecenasD=D_num2portD(*tempDecenas); //Saca el valor de decenas de la tabla de look up para el puerto D
+    *tempDecenasB=D_num2portB(*tempDecenas); //Saca el valor de decenas de la tabla de look up para el puerto B
 
 
     //no tengo retun :P
