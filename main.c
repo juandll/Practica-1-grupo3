@@ -31,6 +31,7 @@ void main (void)
     Tm_Inicie_periodico (&sondeoDisplay,TIEMPODISPLAY);// iniciar periodico de Display
     D_inicie_display(&disp,&tempUnidadesD,&tempUnidadesB,&tempDecenasD,&tempDecenasB);
     Su_inicie_uart(ubrr,&teclado);
+    Su_Trasmicion(&temperatura);
     T_inicie_timer();
     DyC_inicialice_ADC(&banderaADC);
 
@@ -67,6 +68,7 @@ void main (void)
         {
             Tm_Baje_periodico (&sondeoDisplay);//reset de condicion
             D_Procese_Display(&disp);
+            Su_Trasmicion(&temperatura);
         }
         //if (/*apague el timer tyt*/)
         //    Tm_Termine_periodico (&tyt);

@@ -39,7 +39,7 @@ struct Comunicacion{
 void Su_inicie_uart(uint16_t ubrr, Comunicacion *com);
 void Su_Atencion_Bajo_Consumo(Comunicacion *com);
 char Su_Hubo_Tecla_Serial(Comunicacion *tec_enable);
-void Su_Trasmicion(int8_t *temp);
+void Su_Trasmicion(int8_t *temperatura);
 
 #ifdef __cplusplus
 } // extern "C"
