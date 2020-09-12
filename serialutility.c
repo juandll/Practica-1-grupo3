@@ -26,6 +26,15 @@ char Su_Hubo_Tecla_Serial(Comunicacion *tec_enable){
     }
 }
 
+void Su_Trasmicion(int8_t *temp){
+    // se enciende la recepcion y transmision
+    UCSR0B |= (1 << RXEN0) | (1 << TXEN0);
+
+    //coloca el dato de temperatura en la transmición
+    UDR0 = temp;
+}
+
+
 void Su_Atencion_Bajo_Consumo(Comunicacion *com){
     switch (com->estado)
     {
