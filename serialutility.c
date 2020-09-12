@@ -31,7 +31,7 @@ void Su_Trasmicion(int8_t *temperatura){
     UCSR0B |= (1 << RXEN0) | (1 << TXEN0);
 
     //coloca el dato de temperatura en la transmición
-    UDR0 = temp;
+    UDR0 = temperatura;
 }
 
 
