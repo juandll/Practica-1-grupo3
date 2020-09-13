@@ -27,7 +27,8 @@ short leaADC(){
 int8_t convierta_a_Celsius(short adcval)
 {
     int8_t tempVal; //Guarda valor temperatura en Celcius
-    tempVal = (adcval - TEMPOFFSET)/VREFF;
+    tempVal = (adcval - TEMPOFFSET)/1.22F;
+	//tempVal = (tempVal/9 - 32/9)*(5);
     return tempVal; //Retorna el valor de temperatura en Celcius
 }
 

@@ -4,6 +4,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+#include <avr/io.h>
 //#include <stddef.h>
 typedef struct D_Display D_Display;
 

@@ -26,83 +26,29 @@ char Su_Hubo_Tecla_Serial(Comunicacion *tec_enable){
     }
 }
 
-void Su_Trasmicion(int8_t *temperatura){
-    // se enciende la recepcion y transmision
-    UCSR0B |= (1 << RXEN0) | (1 << TXEN0);
-
+void Su_Trasmicion(int8_t *tempUnidades, int8_t *bandera, int8_t *tempDecenas){
+	UCSR0B |= (1 << RXEN0) | (1 << TXEN0);
+	if(*bandera==0)
+	{
     //coloca el dato de temperatura en la transmición
-    UDR0 = temperatura;
-}
-
-
-void Su_Atencion_Bajo_Consumo(Comunicacion *com){
-    switch (com->estado)
-    {
-        case ESTADO0: //Verificar encendido
-            if ((com->tecla)==POWER_MODE){
-                com->estado=ESTADO1;
-            }
-            else if((com->tecla)==STANDBY_MODE){
-                 com->estado=ESTADO2;
-            }
-            else if((com->tecla)==WAKEUP){
-                 
-                 com->estado=ESTADO3;
-             }
-             else
-             {
-                  com->estado=ESTADO0;
-             }
-                
-                       
-        break;
-
-        case ESTADO1: //Power mode 
-            if ((com->tecla)==DOWN){
-                Power_Down();
-                com->estado=ESTADO0;
-            }
-            else if((com->tecla) == SAFE){
-                Power_Safe();
-                com->estado = ESTADO0;
-                }
-             else{
-                com->estado=ESTADO0;
-                }         
-            
-        break;
-        
-        case ESTADO2: //Standby mode 
-            if ((com->tecla)==STANDBY){
-                Standby();
-                com->estado=ESTADO0;
-            }
-            else if((com->tecla)==EXTENDED_STANDBY){
-                Extended_Standby();
-                com->estado=ESTADO0;
-                }
-            else{
-                com->estado=ESTADO0;
-                }
-        break;
-
-        case ESTADO3: //Wakeup Mode
-            if ((com->tecla)==EXTERNAL){
-                External_Reset_Flag();
-                com->estado=ESTADO0;
-            }
-            else if ((com->tecla)==WATCHDOG){
-                Watchdog_Function();
-                com->estado=ESTADO0;
-                }
-             else{
-                 com->estado=ESTADO0;
-                } 
-        break;
-
-        default:
-        break;
-    }
+		*bandera= 1;
+		UDR0 = *tempDecenas + '0';
+	}
+	else if(*bandera==1)
+	{
+		*bandera=2;
+		UDR0 = *tempUnidades + '0';
+	}
+	else if (*bandera==2)
+	{
+		*bandera=3;
+		UDR0 = 'C';
+	}
+	else if(*bandera==3)
+	{
+		*bandera=0;
+		UDR0 = ' ';
+	}
 }
 
 void Power_Down(){
@@ -110,7 +56,7 @@ void Power_Down(){
     while the external interrupts, the 2-wire Serial
     Interface address watch, and the Watchdog continue 
     operating (if enabled).*/
-
+	
     SMCR =  0X00;
     MCUCR = 0X00;
     SMCR = (0<<SM2) | (1<<SM1)| (0<<SM0);
@@ -166,9 +112,84 @@ void External_Reset_Flag(){
 
 void Watchdog_Function(){
     WDTCSR = 0X00;
-    WDTCSR |= 0b00010000; // Watchdog Change Enable
+    WDTCSR |= 0b00011000; // Watchdog Change Enable
     WDTCSR |= 0b00000110; // Watchdog timer prescaler of 128k
 
     //For seting up the watchdog
-    MCUSR &= ~(0b00001000);
+   // MCUSR &= ~(0b00001000);
+}
+
+
+void Su_Atencion_Bajo_Consumo(Comunicacion *com){
+    switch (com->estado)
+    {
+        case ESTADO0: //Verificar encendido
+			
+            if ((com->tecla)==POWER_MODE){
+				
+                com->estado=ESTADO1;
+            }
+            else if((com->tecla)==STANDBY_MODE){
+                 com->estado=ESTADO2;
+            }
+            else if((com->tecla)==WAKEUP){
+                 
+                 com->estado=ESTADO3;
+             }
+             else
+             {
+                  com->estado=ESTADO0;
+             }
+                
+                       
+        break;
+
+        case ESTADO1: //Power mode 
+					
+            if ((com->tecla)==DOWN){
+                Power_Down();
+                com->estado=ESTADO0;
+            }
+            else if((com->tecla) == SAFE){
+                Power_Safe();
+                com->estado = ESTADO0;
+                }
+             else{
+				 
+                com->estado=ESTADO0;
+                }         
+            
+        break;
+        
+        case ESTADO2: //Standby mode 
+            if ((com->tecla)==STANDBY){
+                Standby();
+                com->estado=ESTADO0;
+            }
+            else if((com->tecla)==EXTENDED_STANDBY){
+                Extended_Standby();
+                com->estado=ESTADO0;
+                }
+            else{
+                com->estado=ESTADO0;
+                }
+        break;
+
+        case ESTADO3: //Wakeup Mode
+            if ((com->tecla)==EXTERNAL){
+                External_Reset_Flag();
+                com->estado=ESTADO0;
+            }
+            else if ((com->tecla)==WATCHDOG){
+                Watchdog_Function();
+                com->estado=ESTADO0;
+                }
+             else{
+                 com->estado=ESTADO0;
+                } 
+        break;
+
+        default:
+        break;
+    }
 }

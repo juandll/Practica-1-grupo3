@@ -1,10 +1,10 @@
 #if !defined(DEFYCONF_H)
 #define DEFYCONF_H
-
+#include <avr/io.h>
 
 #define TIEMPOADC 1000
-#define TIEMPODISPLAY 10
-#define TEMPOFFSET 273 //Segun el datasheet de calibracion se debe restar un valor de 273
+#define TIEMPODISPLAY 2
+#define TEMPOFFSET 337 //Segun el datasheet de calibracion se debe restar un valor de 273
 #define VREFF 1.22//El valor de voltaje de referencia sobre el canal es de 1.22V
 
 

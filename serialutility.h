@@ -5,6 +5,7 @@
 extern "C" {
 #endif
 
+#include <avr/io.h>
 /*Hubo teclas presionadas*/
 #define BANDERA_TECLAS_ON 0xFFU
 
@@ -39,7 +40,7 @@ struct Comunicacion{
 void Su_inicie_uart(uint16_t ubrr, Comunicacion *com);
 void Su_Atencion_Bajo_Consumo(Comunicacion *com);
 char Su_Hubo_Tecla_Serial(Comunicacion *tec_enable);
-void Su_Trasmicion(int8_t *temperatura);
+void Su_Trasmicion(int8_t *tempUnidades, int8_t *bandera, int8_t *tempDecenas);
 
 #ifdef __cplusplus
 } // extern "C"

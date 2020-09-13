@@ -3,8 +3,9 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#define limite 62499
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#define limite 49999
 
 void T_inicie_timer(void);
 void T_Timer_1(void);

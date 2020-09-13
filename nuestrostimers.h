@@ -4,6 +4,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+#include <avr/io.h>
 //#include <stddef.h>
 typedef struct Tm_Periodico Tm_Periodico;
 #define TM_PER_B_ACTIVO		0x01U
