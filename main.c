@@ -4,8 +4,8 @@
 #include "display.h"
 #include "definiciones_y_configuraciones.h"
 #include "serialutility.h"
-
-
+#include "Timers.h"
+uint8_t banderaSerial=0;
 // En nuestra implementacion esta deberia ser un global 
 // si vamos a trabajar por interrupción o deberia estar en el
 // espacio de memoria del main.
@@ -63,15 +63,27 @@ void main (void)
             Tm_Baje_periodico (&sondeoADC); //reset de condicion ADC
             DyC_empiece_ADC(&banderaADC); // en este lugar se empieza la conversión del ADC.
         }
+        
         if(Tm_Hubo_periodico (&sondeoDisplay))// condicion de Display entra cada 
         //TIEMPODISPLAY 10 milisegundos
         {
             Tm_Baje_periodico (&sondeoDisplay);//reset de condicion
             D_Procese_Display(&disp);
+        }
+       
+        if(banderaSerial)// condicion de Display entra cada 
+        //TIEMPODISPLAY 10 milisegundos
+        {
+            banderaSerial=0;
             Su_Trasmicion(&temperatura);
         }
         //if (/*apague el timer tyt*/)
         //    Tm_Termine_periodico (&tyt);
     }
 // Nunca deberia llegar aquí
+}
+
+ISR(TIMER1_COMPA_vect){
+   //interrupt commands for TIMER 1 here
+   banderaSerial=1;
 }
