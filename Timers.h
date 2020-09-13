@@ -4,7 +4,7 @@
 extern "C" {
 #endif
 
-#define limite 62499
+#define limite 24999
 
 void T_inicie_timer(void);
 void T_Timer_1(void);
