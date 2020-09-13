@@ -9,14 +9,13 @@ typedef struct D_Display D_Display;
 
 #define UNIDADES 1// si e estado esta en este muestro unidades
 #define DECENAS  2// si el estado esta en este muestro decenas
-
+#define PORTBMASK 0b00000111 //Mascara del puerto B
+#define PORTDMASK 0b11111100 //Mascara del puerto D
 /*el transistor que habilita el display de unidades esta en el puerto B bit 2*/
-#define PUERTODISPUNIDADES PORTB
-#define TRANDISPUNIDADES 0b00000100
+#define TRANDISPUNIDADES 0b00000010
 
-/*el transistor que habilita el display de unidades esta en el puerto C bit 5*/
-#define PUERTOBDISPDECENAS PORTC
-#define TRANDISPDECENAS 0b00100000
+/*el transistor que habilita el display de decenas esta en el puerto C bit 5*/
+#define TRANDISPDECENAS 0b00000100
 
 struct D_Display
 {

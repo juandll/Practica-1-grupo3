@@ -34,23 +34,23 @@ void muestre_en_display(uint8_t digitoD  , uint8_t display , uint8_t digitoB )
     /*configura el puerto o los puertos que esten usando para si display*/
 
     /*primero bajar todos los bits del display en el puerto*/    
-    PORTB &= ~0b00000111;
+    PORTB &= ~PORTBMASK;
     /*subir solo los necesarios*/
     
     /*primero bafar todos los bits del display en el puerto*/    
-    PORTD &= ~0b11111100;
+    PORTD &= ~PORTDMASK;
     /*subir solo los necesarios*/
 
     /*y dependiendo del valor de display enciende el transistor correspondiente*/
     if(display==UNIDADES){
         PORTB |= digitoB;
         PORTD |= digitoD;
-        PORTB |= 0b00000010;
+        PORTB |= TRANDISPUNIDADES;
     }
     if(display==DECENAS){
         PORTB |= digitoB;
         PORTD |= digitoD;
-        PORTB |= 0b00000100;
+        PORTB |= TRANDISPUNIDADES;
     }
 }
 
