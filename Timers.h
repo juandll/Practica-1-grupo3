@@ -5,7 +5,7 @@ extern "C" {
 #endif
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#define limite 49999
+#define limite 24999
 
 void T_inicie_timer(void);
 void T_Timer_1(void);
