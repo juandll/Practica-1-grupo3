@@ -2,12 +2,12 @@
 #include "display.h"
 #include <avr/io.h>
 
-void D_inicie_display (D_Display *disp,int8_t *tempUnidadesD,int8_t *tempUnidadesB,int8_t *tempDecenasD,int8_t *tempDecenasB)
+void D_inicie_display (D_Display *disp,int8_t *tempUnidadesD,int8_t *tempUnidadesC,int8_t *tempDecenasD,int8_t *tempDecenasC)
 {
     disp->tempUnidadesD=tempUnidadesD;
-    disp->tempUnidadesB=tempUnidadesB;
+    disp->tempUnidadesC=tempUnidadesC;
     disp->tempDecenasD=tempDecenasD;
-    disp->tempDecenasB=tempDecenasB;
+    disp->tempDecenasC=tempDecenasC;
     disp->mostrando=UNIDADES;
 }
 
@@ -18,12 +18,12 @@ void D_Procese_display (D_Display *disp)
         case UNIDADES://mostramos unidades
             disp->mostrando=DECENAS;// cambiar estado
             //muestro la conversión a unidades leidas por el ADC y convertidas
-            muestre_en_display(*disp->tempUnidadesD,UNIDADES,*disp->tempUnidadesB ); 
+            muestre_en_display(*disp->tempUnidadesD,UNIDADES,*disp->tempUnidadesC ); 
 
         break;
         case DECENAS://mostrar decenas
             disp->mostrando=UNIDADES;// cambiar estado
-            muestre_en_display(*disp->tempDecenasD,DECENAS,*disp->tempDecenasB ); 
+            muestre_en_display(*disp->tempDecenasD,DECENAS,*disp->tempDecenasC ); 
 		break;
         default:
             disp->mostrando=DECENAS;
@@ -31,28 +31,28 @@ void D_Procese_display (D_Display *disp)
     }
 }
 
-void muestre_en_display(uint8_t digitoD  , uint8_t display , uint8_t digitoB )
+void muestre_en_display(uint8_t digitoD  , uint8_t display , uint8_t digitoC )
 {
     /*configura el puerto o los puertos que esten usando para si display*/
 
     /*primero bajar todos los bits del display en el puerto*/    
-    PORTB &= ~PORTBMASK;
+    PORTC &= ~PORTBMASK;
     /*subir solo los necesarios*/
     
-    /*primero bafar todos los bits del display en el puerto*/    
+    /*primero bajar todos los bits del display en el puerto*/    
     PORTD &= ~PORTDMASK;
     /*subir solo los necesarios*/
 
     /*y dependiendo del valor de display enciende el transistor correspondiente*/
     if(display==UNIDADES){
-        PORTB |= digitoB;
+        PORTC |= digitoC;
         PORTD |= digitoD;
-        PORTB |= TRANDISPUNIDADES;
+        PORTC |= TRANDISPUNIDADES;
     }
     if(display==DECENAS){
-        PORTB |= digitoB;
+        PORTC |= digitoC;
         PORTD |= digitoD;
-        PORTB |= TRANDISPDECENAS;
+        PORTC |= TRANDISPDECENAS;
     }
 }
 
@@ -68,8 +68,8 @@ anodo o catodo?? prende con 1 o con 0??? prende con 1
 
 */
 
-const int8_t tablaD[12]={0b11011100,0b00010000,0b10101100,0b10111000,0b01110000,0b11111000,0b11111100,0b10010000,0b11111100,0b11111000,0b00100000,0b11101100};/*del 0 al 9 y menos y error*/
-const int8_t tablaB[12]={0b00000001,0b00000001,0b00000001,0b00000001,0b00000001,0b00000000,0b00000000,0b00000001,0b00000001,0b00000001,0b00000000,0b00000000};/*del 0 al 9 y menos y error*/
+const int8_t tablaD[12]={0b11011000,0b00010000,0b10101000,0b10111000,0b01110000,0b11111000,0b11111000,0b10110000,0b11111000,0b11111000,0b00100000,0b11101000};/*del 0 al 9 y menos y error*/
+const int8_t tablaC[12]={0b00001001,0b00000001,0b00001001,0b00000001,0b00000001,0b00000000,0b00001000,0b00000001,0b00001001,0b00000001,0b00000000,0b00001000};/*del 0 al 9 y menos y error*/
 
 int8_t D_num2portD(int8_t num)
 {
@@ -78,11 +78,11 @@ int8_t D_num2portD(int8_t num)
     return tablaD[num];
 }
 
-int8_t D_num2portB(int8_t num)
+int8_t D_num2portC(int8_t num)
 {
     if(num>=12||num<0)
-        return tablaB[11];/*en la pos 11 de la tabla esta el error*/
-    return tablaB[num];
+        return tablaC[11];/*en la pos 11 de la tabla esta el error*/
+    return tablaC[num];
 }
 
 

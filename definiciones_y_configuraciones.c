@@ -45,7 +45,7 @@ int8_t saqueDecenas(int8_t tempVal)
     return decenas;                   //Retorna el valor de decenas
 }
 
-void DyC_Procese_ADC(int8_t *temperatura,int8_t *tempUnidades,int8_t *tempDecenas,int8_t *tempUnidadesD,int8_t *tempUnidadesB,int8_t *tempDecenasD,int8_t *tempDecenasB,int8_t *banderaADC)
+void DyC_Procese_ADC(int8_t *temperatura,int8_t *tempUnidades,int8_t *tempDecenas,int8_t *tempUnidadesD,int8_t *tempUnidadesC,int8_t *tempDecenasD,int8_t *tempDecenasC,int8_t *banderaADC)
 {
     *banderaADC=0; 
     short adcval= leaADC(); //Lectura del ADC
@@ -53,9 +53,9 @@ void DyC_Procese_ADC(int8_t *temperatura,int8_t *tempUnidades,int8_t *tempDecena
     *tempUnidades=saqueUnidades(*temperatura); //Saca las unidades del valor de temperatura
     *tempDecenas=saqueDecenas(*temperatura); //Saca las decenas del valor de temperatura
     *tempUnidadesD=D_num2portD(*tempUnidades); //Saca el valor de unidades de la tabla de look up para el puerto D
-    *tempUnidadesB=D_num2portB(*tempUnidades); //Saca el valor de unidades de la tabla de look up para el puerto B
+    *tempUnidadesC=D_num2portC(*tempUnidades); //Saca el valor de unidades de la tabla de look up para el puerto B
     *tempDecenasD=D_num2portD(*tempDecenas); //Saca el valor de decenas de la tabla de look up para el puerto D
-    *tempDecenasB=D_num2portB(*tempDecenas); //Saca el valor de decenas de la tabla de look up para el puerto B
+    *tempDecenasC=D_num2portC(*tempDecenas); //Saca el valor de decenas de la tabla de look up para el puerto B
 
 
     //no tengo retun :P
