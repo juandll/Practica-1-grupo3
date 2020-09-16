@@ -18,17 +18,13 @@ extern "C" {
 #define STANDBY 'Y'
 #define EXTENDED_STANDBY 'E'
 
-/*Modos de ENCENDER*/
-#define WAKEUP 'W'
-#define EXTERNAL 'X' //EXTERNAL_RESET_FLAG
-#define WATCHDOG 'G' 
+#define	PMASK	0xEF;
 
 /*Estados Máquina*/
 typedef enum{
     ESTADO0,
     ESTADO1,
-    ESTADO2,
-    ESTADO3
+    ESTADO2
 }ESTADOS;
 
 typedef struct Comunicacion Comunicacion;
@@ -41,6 +37,9 @@ void Su_inicie_uart(uint16_t ubrr, Comunicacion *com);
 void Su_Atencion_Bajo_Consumo(Comunicacion *com);
 char Su_Hubo_Tecla_Serial(Comunicacion *tec_enable);
 void Su_Trasmicion(int8_t *tempUnidades, int8_t *bandera, int8_t *tempDecenas);
+void SuWatchdog_Function(void);
+void Su_Interrupt_Enable(void);
+void Su_Interrupt_Disable(void);
 
 #ifdef __cplusplus
 } // extern "C"

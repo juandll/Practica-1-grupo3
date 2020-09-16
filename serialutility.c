@@ -56,7 +56,7 @@ void Power_Down(){
     while the external interrupts, the 2-wire Serial
     Interface address watch, and the Watchdog continue 
     operating (if enabled).*/
-	
+    PRR |= PMASK; //Shutdown Peripherical
     SMCR =  0X00;
     MCUCR = 0X00;
     SMCR = (0<<SM2) | (1<<SM1)| (0<<SM0);
@@ -67,7 +67,7 @@ void Power_Safe(){
     /*Same as POWER DOWN BUT If Timer/Counter2 is enabled, 
     it will keep running during sleep. The device can 
     wake up from either Timer Overflow */
-
+    PRR |= PMASK; //Shutdown Peripherical
     SMCR =  0X00;
     MCUCR = 0X00;
     SMCR = (0<<SM2) | (1<<SM1)| (1<<SM0);
@@ -78,7 +78,7 @@ void Standby(){
     /*Same as Power Down BUT the oscillator keeps running 
     because is external crystal/resonator 
     Wakes up in 6 clock cycles*/
-
+    PRR |= PMASK; //Shutdown Peripherical
     SMCR =  0X00;
     MCUCR = 0X00;
     SMCR = (1<<SM2) | (1<<SM1)| (0<<SM0);
@@ -89,7 +89,7 @@ void Extended_Standby(){
     /*Same as Power Safe BUT the oscillator keeps running 
     because is external crystal/resonator 
     Wakes up in 6 clock cycles*/
-
+    PRR |= PMASK; //Shutdown Peripherical
     SMCR =  0X00;
     MCUCR = 0X00;
     SMCR = (1<<SM2) | (1<<SM1)| (1<<SM0);
@@ -105,20 +105,22 @@ void Extended_Standby(){
 • External level interrupt on INT
 • Pin change interrupt */
 
-void External_Reset_Flag(){
-    MCUSR = 0X00;
-    MCUSR = (1<<EXTRF); // 0b00000010 This bit is set if an External Reset occurs.
+void Su_Watchdog_Function(){
+    WDTCSR = 0b00011000; //enable de WDCE and WDE
+    WDTCSR = 0b00100110; //prescalizacion de 128k - Oscilador de 1s
+    WDTCSR |= 0b01000000; //enable interrupcion WDIE
+    MCUCR |= (3 << 5); //set both BODS and BODSE at the same time
+    MCUCR = (MCUCR & ~(1 << 5)) | (1 << 6); //then set the BODS bit and clear the BODSE bit at the same time
 }
 
-void Watchdog_Function(){
-    WDTCSR = 0X00;
-    WDTCSR |= 0b00011000; // Watchdog Change Enable
-    WDTCSR |= 0b00000110; // Watchdog timer prescaler of 128k
-
-    //For seting up the watchdog
-   // MCUSR &= ~(0b00001000);
+void Su_Interrupt_Enable(){
+    EICRA= (1<<ISC01)|(1<<ISC00); //The rising edge of INT0 generates an interrupt request. 
+    EIMSK= (1<<INT0); //Enable INT0
 }
-
+//EIFR INTF0
+void Su_Interrupt_Disable(){
+    EIMSK= (0<<INT0); //Disable INT0
+}
 
 void Su_Atencion_Bajo_Consumo(Comunicacion *com){
     switch (com->estado)
@@ -132,14 +134,11 @@ void Su_Atencion_Bajo_Consumo(Comunicacion *com){
             else if((com->tecla)==STANDBY_MODE){
                  com->estado=ESTADO2;
             }
-            else if((com->tecla)==WAKEUP){
-                 
-                 com->estado=ESTADO3;
-             }
-             else
-             {
-                  com->estado=ESTADO0;
-             }
+            else
+            {
+                 com->estado=ESTADO0;
+                 Su_Interrupt_Disable();
+            }
                 
                        
         break;
@@ -157,6 +156,7 @@ void Su_Atencion_Bajo_Consumo(Comunicacion *com){
              else{
 				 
                 com->estado=ESTADO0;
+                Su_Interrupt_Disable();
                 }         
             
         break;
@@ -172,21 +172,8 @@ void Su_Atencion_Bajo_Consumo(Comunicacion *com){
                 }
             else{
                 com->estado=ESTADO0;
+                Su_Interrupt_Disable();
                 }
-        break;
-
-        case ESTADO3: //Wakeup Mode
-            if ((com->tecla)==EXTERNAL){
-                External_Reset_Flag();
-                com->estado=ESTADO0;
-            }
-            else if ((com->tecla)==WATCHDOG){
-                Watchdog_Function();
-                com->estado=ESTADO0;
-                }
-             else{
-                 com->estado=ESTADO0;
-                } 
         break;
 
         default:

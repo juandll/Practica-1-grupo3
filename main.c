@@ -42,6 +42,7 @@ void main (void)
         //loop(..);
         if(Su_Hubo_Tecla_Serial(&teclado))
         {
+            Su_Interrupt_Enable();
             Su_Atencion_Bajo_Consumo(&teclado);
         }
         if(banderaMili)// supongamos que tenemos un timer por hardware de 1 ms
@@ -75,7 +76,7 @@ void main (void)
         }
        
         if(banderaSerial)// condicion de Display entra cada 
-        //TIEMPODISPLAY 10 milisegundos
+        //TIEMPODISPLAY 200 milisegundos
         {
             banderaSerial=0;
             Su_Trasmicion(&tempUnidades,&bandera_tx,&tempDecenas);
@@ -92,4 +93,10 @@ ISR(TIMER1_COMPA_vect){
 }
 ISR(TIMER0_COMPA_vect){
 	banderaMili=1;
+}
+ISR(INT0_vect){
+	Su_Interrupt_Disable();
+    Su_Watchdog_Function();
+    SMCR &= (uint8_t)(~(1<<SE));
+    PRR &= ~PMASK; //Turn On Peripherical
 }
