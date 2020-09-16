@@ -37,7 +37,7 @@ void Su_inicie_uart(uint16_t ubrr, Comunicacion *com);
 void Su_Atencion_Bajo_Consumo(Comunicacion *com);
 char Su_Hubo_Tecla_Serial(Comunicacion *tec_enable);
 void Su_Trasmicion(int8_t *tempUnidades, int8_t *bandera, int8_t *tempDecenas);
-void SuWatchdog_Function(void);
+void Su_Watchdog_Function(void);
 void Su_Interrupt_Enable(void);
 void Su_Interrupt_Disable(void);
 
