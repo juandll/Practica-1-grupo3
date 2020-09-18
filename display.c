@@ -36,7 +36,7 @@ void muestre_en_display(uint8_t digitoD  , uint8_t display , uint8_t digitoC )
     /*configura el puerto o los puertos que esten usando para si display*/
 
     /*primero bajar todos los bits del display en el puerto*/    
-    PORTC &= ~PORTBMASK;
+    PORTC &= ~PORTCMASK;
     /*subir solo los necesarios*/
     
     /*primero bajar todos los bits del display en el puerto*/    
@@ -68,7 +68,7 @@ anodo o catodo?? prende con 1 o con 0??? prende con 1
 
 */
 
-const int8_t tablaD[12]={0b11011000,0b00010000,0b10101000,0b10111000,0b01110000,0b11111000,0b11111000,0b10110000,0b11111000,0b11111000,0b00100000,0b11101000};/*del 0 al 9 y menos y error*/
+const int8_t tablaD[12]={0b11011000,0b00010000,0b10101000,0b10111000,0b01110000,0b11111000,0b11111000,0b10010000,0b11111000,0b11111000,0b00100000,0b11101000};/*del 0 al 9 y menos y error*/
 const int8_t tablaC[12]={0b00001001,0b00000001,0b00001001,0b00000001,0b00000001,0b00000000,0b00001000,0b00000001,0b00001001,0b00000001,0b00000000,0b00001000};/*del 0 al 9 y menos y error*/
 
 int8_t D_num2portD(int8_t num)

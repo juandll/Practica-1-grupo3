@@ -1,5 +1,7 @@
 #include "serialutility.h"
 #include <avr/io.h>
+#include <avr/power.h>
+#include <avr/sleep.h>
 
 void Su_inicie_uart(uint16_t ubrr, Comunicacion *com)
 {
@@ -51,49 +53,68 @@ void Su_Trasmicion(int8_t *tempUnidades, int8_t *bandera, int8_t *tempDecenas){
 	}
 }
 
+
 void Power_Down(){
     /*In this mode, the external Oscillator is stopped, 
     while the external interrupts, the 2-wire Serial
     Interface address watch, and the Watchdog continue 
     operating (if enabled).*/
+	PORTC &= ~0b00001111;
+	PORTD &= ~0b11111000;
     PRR |= PMASK; //Shutdown Peripherical
     SMCR =  0X00;
     MCUCR = 0X00;
-    SMCR = (0<<SM2) | (1<<SM1)| (0<<SM0);
-    MCUCR |= 0b00111000; //BOD Disable ans PORTS
+    SMCR = (0<<SM2) | (1<<SM1)| (0<<SM0); //Power Down Mode
+    SMCR |= 1; //enable sleep, set SE bit
+    ADCSRA &= ~(1<<7); // Disable ADC
+    MCUCR |= 0b01100000; //BOD Disable ans PORTS
+
 }
 
 void Power_Safe(){
     /*Same as POWER DOWN BUT If Timer/Counter2 is enabled, 
     it will keep running during sleep. The device can 
     wake up from either Timer Overflow */
+	PORTC &= ~0b00001111;
+	PORTD &= ~0b11111000;
     PRR |= PMASK; //Shutdown Peripherical
     SMCR =  0X00;
     MCUCR = 0X00;
     SMCR = (0<<SM2) | (1<<SM1)| (1<<SM0);
-    MCUCR |= 0b00111000; //BOD Disable ans PORTS
+	SMCR |= 1; //enable sleep, set SE bit
+	ADCSRA &= ~(1<<7); // Disable ADC
+	MCUCR |= 0b01100000; //BOD Disable ans PORTS
+
 }
 
 void Standby(){ 
     /*Same as Power Down BUT the oscillator keeps running 
     because is external crystal/resonator 
     Wakes up in 6 clock cycles*/
+	PORTC &= ~0b00001111;
+	PORTD &= ~0b11111000;
     PRR |= PMASK; //Shutdown Peripherical
     SMCR =  0X00;
     MCUCR = 0X00;
     SMCR = (1<<SM2) | (1<<SM1)| (0<<SM0);
-    MCUCR |= 0b00111000; //BOD Disable ans PORTS
+	SMCR |= 1; //enable sleep, set SE bit
+	ADCSRA &= ~(1<<7); // Disable ADC
+	MCUCR |= 0b01100000; //BOD Disable ans PORTS
 }
 
 void Extended_Standby(){
     /*Same as Power Safe BUT the oscillator keeps running 
     because is external crystal/resonator 
     Wakes up in 6 clock cycles*/
+	PORTC &= ~0b00001111;
+	PORTD &= ~0b11111000;
     PRR |= PMASK; //Shutdown Peripherical
     SMCR =  0X00;
     MCUCR = 0X00;
     SMCR = (1<<SM2) | (1<<SM1)| (1<<SM0);
-    MCUCR |= 0b00111000; //BOD Disable ans PORTS
+	SMCR |= 1; //enable sleep, set SE bit
+	ADCSRA &= ~(1<<7); // Disable ADC
+	MCUCR |= 0b01100000; //BOD Disable ans PORTS
 }
 
 /* Only one of these events can wake up the MCU:
@@ -114,6 +135,7 @@ void Su_Watchdog_Function(){
 }
 
 void Su_Interrupt_Enable(){
+	DDRD &= 0xFB; 
     EICRA= (1<<ISC01)|(1<<ISC00); //The rising edge of INT0 generates an interrupt request. 
     EIMSK= (1<<INT0); //Enable INT0
 }
@@ -121,6 +143,8 @@ void Su_Interrupt_Enable(){
 void Su_Interrupt_Disable(){
     EIMSK= (0<<INT0); //Disable INT0
 }
+
+
 
 void Su_Atencion_Bajo_Consumo(Comunicacion *com){
     switch (com->estado)

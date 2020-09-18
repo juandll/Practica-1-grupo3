@@ -1,10 +1,14 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <avr/sleep.h>
+#include <avr/power.h>
 #include "nuestrostimers.h"
 #include "display.h"
 #include "definiciones_y_configuraciones.h"
 #include "serialutility.h"
 #include "Timers.h"
+
+
 uint8_t banderaSerial=0;
 uint8_t banderaMili=0;
 
@@ -25,14 +29,14 @@ void main (void)
     int8_t temperatura;//ya va a estar en celsius
     int8_t tempUnidades;//vamos a guardar las unidades
     int8_t tempUnidadesD;//vamos a guardar el BCD del puerto D unidades
-    int8_t tempUnidadesB;//vamos a guardar el BCD del puerto B unidades
+    int8_t tempUnidadesC;//vamos a guardar el BCD del puerto B unidades
     int8_t tempDecenas;//vamos a guardar las unidades  
     int8_t tempDecenasD;//vamos a guardar el BCD del puerto D decenas  
-    int8_t tempDecenasB;//vamos a guardar el BCD del puerto B decenas   
+    int8_t tempDecenasC;//vamos a guardar el BCD del puerto B decenas   
     int8_t banderaADC; //bandera que indica que se esta realizando la conversión ADC
     Tm_Inicie_periodico (&sondeoADC,TIEMPOADC);// iniciar periodico de ADC
     Tm_Inicie_periodico (&sondeoDisplay,TIEMPODISPLAY);// iniciar periodico de Display
-    D_inicie_display(&disp,&tempUnidadesD,&tempUnidadesB,&tempDecenasD,&tempDecenasB);
+    D_inicie_display(&disp,&tempUnidadesD,&tempUnidadesC,&tempDecenasD,&tempDecenasC);
     Su_inicie_uart(ubrr,&teclado);
     T_inicie_timer();
     DyC_inicialice_ADC(&banderaADC);
@@ -55,7 +59,7 @@ void main (void)
 
         if(~(ADCSRA & (1 << ADSC)) && banderaADC)// Interrupción lea ADC
         {
-            DyC_Procese_ADC(&temperatura,&tempUnidades,&tempDecenas,&tempUnidadesD,&tempUnidadesB,&tempDecenasD,&tempDecenasB, &banderaADC);
+            DyC_Procese_ADC(&temperatura,&tempUnidades,&tempDecenas,&tempUnidadesD,&tempUnidadesC,&tempDecenasD,&tempDecenasC, &banderaADC);
             /*en este lugar leemos el ADC y convertimos el valor leido a 
              grados y a unidades y decenas para el display
             */
@@ -95,8 +99,8 @@ ISR(TIMER0_COMPA_vect){
 	banderaMili=1;
 }
 ISR(INT0_vect){
-	Su_Interrupt_Disable();
-    Su_Watchdog_Function();
+    //Su_Watchdog_Function();
     SMCR &= (uint8_t)(~(1<<SE));
     PRR &= ~PMASK; //Turn On Peripherical
+
 }

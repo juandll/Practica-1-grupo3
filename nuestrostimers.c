@@ -18,8 +18,8 @@ void Tm_Inicie_periodico (Tm_Periodico *ctp,unsigned int periodo)
 }
 void Tm_Procese_tiempo (Tm_Periodico *ctp)
 {
-//	Timeout *tp;
-//	size_t n;
+	//	Timeout *tp;
+	//	size_t n;
 	if (ctp->banderas & TM_PER_B_ACTIVO)//si el timer est� activo
 	{
 		--(ctp->contador);//decremente en uno
@@ -30,7 +30,7 @@ void Tm_Procese_tiempo (Tm_Periodico *ctp)
 		}
 	}
 	if ((ctp->timeout))//si ya es cero, no entra
-		ctp->timeout=ctp->timeout-1;//decremente tambi�n el timeout
+	ctp->timeout=ctp->timeout-1;//decremente tambi�n el timeout
 }
 char Tm_Hubo_periodico (Tm_Periodico *ctp) //le ingreso la estructura
 {
@@ -44,17 +44,17 @@ void Tm_Termine_periodico (Tm_Periodico *ctp)  //envio la estructura
 {
 	ctp->banderas &= ~TM_PER_B_ACTIVO; //desactivo el timer una vez no lo necesito
 }
-char Tm_Hubo_timeout (Tm_Periodico *ctp)  //revise si hubo timeout 
+char Tm_Hubo_timeout (Tm_Periodico *ctp)  //revise si hubo timeout
 {
-	if((ctp->timeout == 0) && (ctp->banderas &= TM_PER_B_ACTIVO)) //compararlo con 0 
+	if((ctp->timeout == 0) && (ctp->banderas &= TM_PER_B_ACTIVO)) //compararlo con 0
 	{
-	ctp->banderas &=~TM_PER_B_ACTIVO;
-	ctp->banderas &= TM_Out_B_TC;  //bajo la bandera de timeout
-	return 1; //si es 0 retorne 1
+		ctp->banderas &=~TM_PER_B_ACTIVO;
+		ctp->banderas &= TM_Out_B_TC;  //bajo la bandera de timeout
+		return 1; //si es 0 retorne 1
 	}
 	else
 	{
-	return 0;	//si no retorne 0 
+		return 0;	//si no retorne 0
 	}
 }
 void Tm_Inicie_timeout (Tm_Periodico *ctp,unsigned int tiempo)
