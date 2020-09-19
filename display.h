@@ -8,8 +8,8 @@ extern "C" {
 	//#include <stddef.h>
 	typedef struct D_Display D_Display;
 
-	#define UNIDADES 1// si e estado esta en este muestro unidades
-	#define DECENAS  2// si el estado esta en este muestro decenas
+	#define UNIDADES 1           //si e estado esta en este muestro unidades
+	#define DECENAS  2           //si el estado esta en este muestro decenas
 	#define PORTCMASK 0b00001111 //Mascara del puerto C
 	#define PORTDMASK 0b11111000 //Mascara del puerto D
 	/*el transistor que habilita el display de unidades esta en el puerto C bit 1*/

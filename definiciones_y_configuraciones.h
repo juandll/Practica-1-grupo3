@@ -2,10 +2,10 @@
 #define DEFYCONF_H
 #include <avr/io.h>
 
-#define TIEMPOADC 1000
-#define TIEMPODISPLAY 2
-#define TEMPOFFSET 337 //Segun el datasheet de calibracion se debe restar un valor de 273
-#define VREFF 1.22//El valor de voltaje de referencia sobre el canal es de 1.22V
+#define TIEMPOADC 1000  //Tiempo en el que se procesa el ADC
+#define TIEMPODISPLAY 2 //Tiempo en el que se prcesa el display
+#define TEMPOFFSET 337  //Offset del valor de temperatura se debe ajustar antes de la ejecución
+#define VREFF 1.22      //El valor de voltaje de referencia sobre el canal es de 1.22V
 
 
 #ifdef __cplusplus
@@ -20,9 +20,6 @@ extern "C" {
 	void DyC_Procese_ADC(int8_t *temperatura,int8_t *tempUnidades,int8_t *tempDecenas,int8_t *tempUnidadesD,int8_t *tempUnidadesC,int8_t *tempDecenasD,int8_t *tempDecenasC,int8_t *banderaADC);
 	int8_t saqueUnidades(int8_t temperatura);
 	int8_t saqueDecenas(int8_t temperatura);
-
-
-
 
 	#ifdef __cplusplus
 } // extern "C"
