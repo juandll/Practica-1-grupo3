@@ -1,7 +1,6 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <avr/sleep.h>
-#include <avr/power.h>
 #include "nuestrostimers.h"
 #include "display.h"
 #include "definiciones_y_configuraciones.h"
@@ -24,27 +23,27 @@ void main (void)
     D_Display disp;
     Comunicacion teclado;
 
-    uint16_t ubrr=103; // valor para conseguir los 9600 baudios
-	int8_t bandera_tx=0; //bandera de transferencia de datos
-    int8_t temperatura;//ya va a estar en celsius
-    int8_t tempUnidades;//vamos a guardar las unidades
-    int8_t tempUnidadesD;//vamos a guardar el BCD del puerto D unidades
-    int8_t tempUnidadesC;//vamos a guardar el BCD del puerto B unidades
-    int8_t tempDecenas;//vamos a guardar las unidades  
-    int8_t tempDecenasD;//vamos a guardar el BCD del puerto D decenas  
-    int8_t tempDecenasC;//vamos a guardar el BCD del puerto B decenas   
-    int8_t banderaADC; //bandera que indica que se esta realizando la conversión ADC
-    Tm_Inicie_periodico (&sondeoADC,TIEMPOADC);// iniciar periodico de ADC
-    Tm_Inicie_periodico (&sondeoDisplay,TIEMPODISPLAY);// iniciar periodico de Display
-    D_inicie_display(&disp,&tempUnidadesD,&tempUnidadesC,&tempDecenasD,&tempDecenasC);
-    Su_inicie_uart(ubrr,&teclado);
-    T_inicie_timer();
-    DyC_inicialice_ADC(&banderaADC);
+    uint16_t ubrr=103;      //valor para conseguir los 9600 baudios
+	int8_t bandera_tx=0;    //bandera de transferencia de datos
+    int8_t temperatura;     //ya va a estar en celsius
+    int8_t tempUnidades;    //vamos a guardar las unidades
+    int8_t tempUnidadesD;   //vamos a guardar el BCD del puerto D unidades
+    int8_t tempUnidadesC;   //vamos a guardar el BCD del puerto B unidades
+    int8_t tempDecenas;     //vamos a guardar las unidades  
+    int8_t tempDecenasD;    //vamos a guardar el BCD del puerto D decenas  
+    int8_t tempDecenasC;    //vamos a guardar el BCD del puerto B decenas   
+    int8_t banderaADC;      //bandera que indica que se esta realizando la conversión ADC
+    Tm_Inicie_periodico (&sondeoADC,TIEMPOADC);           // iniciar periodico de ADC
+    Tm_Inicie_periodico (&sondeoDisplay,TIEMPODISPLAY);   // iniciar periodico de Display
+    D_inicie_display(&disp,&tempUnidadesD,&tempUnidadesC,&tempDecenasD,&tempDecenasC); //inicializa la estructura disp
+    Su_inicie_uart(ubrr,&teclado);     //inicializa el uart
+    T_inicie_timer();                  //inicializa los timers 0 y 1
+    DyC_inicialice_ADC(&banderaADC);   //inicializa el ADC
 
     for(;;)
     {
         //loop(..);
-        if(Su_Hubo_Tecla_Serial(&teclado))
+        if(Su_Hubo_Tecla_Serial(&teclado)) //Entra cuando detecta recepción del serial
         {
             Su_Interrupt_Enable();
             Su_Atencion_Bajo_Consumo(&teclado);
@@ -76,7 +75,6 @@ void main (void)
         {
             Tm_Baje_periodico (&sondeoDisplay);//reset de condicion
             D_Procese_display(&disp);
-			//Su_Trasmicion(&tempUnidades,&bandera_tx,&tempDecenas);
         }
        
         if(banderaSerial)// condicion de Display entra cada 
@@ -92,7 +90,7 @@ void main (void)
 }
 
 ISR(TIMER1_COMPA_vect){
-	//interrupt commands for TIMER 1 here
+	//se habilita la transmisión serial
 	banderaSerial=1;
 }
 ISR(TIMER0_COMPA_vect){
@@ -100,7 +98,7 @@ ISR(TIMER0_COMPA_vect){
 }
 ISR(INT0_vect){
     //Su_Watchdog_Function();
-    SMCR &= (uint8_t)(~(1<<SE));
-    PRR &= ~PMASK; //Turn On Peripherical
+    SMCR &= (uint8_t)(~(1<<SE)); //baja el bit de bajo consumo
+    PRR &= ~PMASK;               //Prender perifericos
 
 }
