@@ -71,7 +71,7 @@ void main (void)
         }
         
         if(Tm_Hubo_periodico (&sondeoDisplay))// condicion de Display entra cada 
-        //TIEMPODISPLAY 10 milisegundos
+        //TIEMPODISPLAY 2 milisegundos
         {
             Tm_Baje_periodico (&sondeoDisplay);//reset de condicion
             D_Procese_display(&disp);
