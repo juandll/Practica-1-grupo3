@@ -14,8 +14,8 @@ extern "C" {
 	{
 		unsigned int	contador,// van los conteos temporales por timer multiplo
 		periodo;//hasta donde quiero contar
-		unsigned long	timeout;//ac� va un timeout
-		unsigned char banderas; //el primer bit me dice si est� activo este timer el segundo me dice si se da periodo
+		unsigned long	timeout;//aca va un timeout
+		unsigned char banderas; //el primer bit me dice si esta activo este timer el segundo me dice si se da periodo
 	};
 
 	//funciones para  procesar tiempo

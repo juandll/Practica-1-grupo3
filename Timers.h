@@ -5,10 +5,9 @@ extern "C" {
 	#endif
 	#include <avr/io.h>
 	#include <avr/interrupt.h>
-	#define limite 49999
+	#define limite 49999 //limite de conteo del timer 1
 
-	void T_inicie_timer(void);
-	void T_Timer_1(void);
+	void T_inicie_timer(void); //Se inician los timers
 
 	#ifdef __cplusplus
 } // extern "C"
