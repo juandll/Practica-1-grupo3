@@ -1,5 +1,5 @@
 #include <avr/io.h>
-#include "consumo.h"
+#include "Consumo.h"
 
 void C_Power_Down(){
     /*In this mode, the external Oscillator is stopped, 
