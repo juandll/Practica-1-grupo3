@@ -6,7 +6,7 @@
 #include "definiciones_y_configuraciones.h"
 #include "serialutility.h"
 #include "Timers.h"
-
+#include "Consumo.h"
 
 uint8_t banderaSerial=0;
 uint8_t banderaMili=0;
