@@ -69,7 +69,7 @@ void Su_Atencion_Bajo_Consumo(Comunicacion *com){
                        
         break;
 
-        case ESTADO1:                               // Power mode 
+        case ESTADO1:                                 // Power mode 
 					
             if ((com->tecla)==DOWN){
                 C_Power_Down();                       // Realiza Power Down
