@@ -1,8 +1,6 @@
 
 #include "display.h"
 #include <avr/io.h>
-#define SETD	0xF8
-#define SETC	0x03
 
 
 void D_inicie_display (D_Display *disp,int8_t *tempUnidadesD,int8_t *tempUnidadesC,int8_t *tempDecenasD,int8_t *tempDecenasC)
