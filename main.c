@@ -45,7 +45,7 @@ void main (void)
         //loop(..);
         if(Su_Hubo_Tecla_Serial(&teclado)) //Entra cuando detecta recepción del serial
         {
-            Su_Interrupt_Enable();
+            C_Interrupt_Enable();
             Su_Atencion_Bajo_Consumo(&teclado);
         }
         if(banderaMili)// supongamos que tenemos un timer por hardware de 1 ms
@@ -97,7 +97,7 @@ ISR(TIMER0_COMPA_vect){
 	banderaMili=1;
 }
 ISR(INT0_vect){
-    //Su_Watchdog_Function();
+    //C_Watchdog_Function();
     SMCR &= (uint8_t)(~(1<<SE)); //baja el bit de bajo consumo
     PRR &= ~PMASK;               //Prender perifericos
 
