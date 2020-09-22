@@ -2,21 +2,21 @@
 #include "definiciones_y_configuraciones.h"
 #include <avr/io.h>
 
-void DyC_inicialice_ADC(int8_t *banderaADC)
+void DyC_inicialice_ADC(int8_t *banderaADC2)
 {
 	ADMUX = 0x00;
 	ADCSRA = 0x00;
 
 	ADMUX |= 0b00001000;  //ADMUX 8,  0b00001000
 	ADMUX |= 0b11000000;  //REF 1.1V, 0b11000000
-	ADCSRA |= 0b10000111; //preescalización de 128 (1 << ADPS2)(1 << ADPS1)(1 << ADEN)
-	*banderaADC= 0;       //inicializa banderaADC en 0
+	ADCSRA |= 0b10001111; //preescalización de 128 (1 << ADPS2)(1 << ADPS1)(1 << ADEN)
+	*banderaADC2= 0;       //inicializa banderaADC en 0
 }
 
-void DyC_empiece_ADC(int8_t *banderaADC)
+void DyC_empiece_ADC(int8_t *banderaADC2)
 {
 	ADCSRA |= 0b01000000; //inicia la conversión (1 << ADSC)
-	*banderaADC= 1;       //Levanta la banderaADC
+	*banderaADC2= 1;       //Levanta la banderaADC
 }
 
 short leaADC(){
@@ -44,9 +44,9 @@ int8_t saqueDecenas(int8_t tempVal)
 	return decenas;                   //Retorna el valor de decenas
 }
 
-void DyC_Procese_ADC(int8_t *temperatura,int8_t *tempUnidades,int8_t *tempDecenas,int8_t *tempUnidadesD,int8_t *tempUnidadesC,int8_t *tempDecenasD,int8_t *tempDecenasC,int8_t *banderaADC)
+void DyC_Procese_ADC(int8_t *temperatura,int8_t *tempUnidades,int8_t *tempDecenas,int8_t *tempUnidadesD,int8_t *tempUnidadesC,int8_t *tempDecenasD,int8_t *tempDecenasC,int8_t *banderaADC2)
 {
-	*banderaADC=0;                              //Se apaga la banderaADC
+	*banderaADC2=0;                             //Se apaga la banderaADC2
 	short adcval= leaADC();                     //Lectura del ADC
 	*temperatura=convierta_a_Celsius(adcval);   //Conversion del temperatura a Celcius
 	*tempUnidades=saqueUnidades(*temperatura);  //Saca las unidades del valor de temperatura

@@ -81,6 +81,11 @@ void C_Watchdog_Function(){
     MCUCR = (MCUCR & ~(1 << 5)) | (1 << 6);         // Activa BODS y limpia BODSE al mismo tiempo
 }
 
+void C_Despertar(){
+    SMCR &= (uint8_t)(~(1<<SE)); //baja el bit de bajo consumo
+    PRR &= ~PMASK;               //Prender perifericos
+}
+
 void C_Interrupt_Enable(){
 	DDRD &= 0xFB; 
     EICRA= (1<<ISC01)|(1<<ISC00);                   // Al elevarse el INT0 realiza interrupcion 

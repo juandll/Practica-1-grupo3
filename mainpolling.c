@@ -8,9 +8,6 @@
 #include "Timers.h"
 #include "Consumo.h"
 
-uint8_t banderaSerial=0;
-uint8_t banderaMili=0;
-uint8_t banderaDespertar=0;
 // En nuestra implementacion esta deberia ser un global 
 // si vamos a trabajar por interrupción o deberia estar en el
 // espacio de memoria del main.
@@ -48,9 +45,8 @@ void main (void)
             C_Interrupt_Enable();
             Su_Atencion_Bajo_Consumo(&teclado);
         }
-        if(banderaMili)// supongamos que tenemos un timer por hardware de 1 ms
+        if(TIFR0 & (1 << OCF0A)// supongamos que tenemos un timer por hardware de 1 ms
         {
-            banderaMili=0;
             //reseteamos el timer
             Tm_Procese_tiempo (&sondeoADC);
             Tm_Procese_tiempo (&sondeoDisplay);
@@ -77,31 +73,18 @@ void main (void)
             D_Procese_display(&disp);
         }
        
-        if(banderaSerial)// condicion de Display entra cada 
+        if(TIFR1 & (1 << OCF1A))// condicion de Display entra cada 
         //TIEMPODISPLAY 200 milisegundos
         {
-            banderaSerial=0;
             Su_Trasmicion(&tempUnidades,&bandera_tx,&tempDecenas);
         }
 
-        if(banderaDespertar)//Aqui se despierta el microcontrolador de bajo consumo
+        if(EICRA & (1 << ISC00))//Aqui se despierta el microcontrolador de bajo consumo
         {
-            banderaDespertar=0;
             C_Despertar();
         }
         //if (/*apague el timer tyt*/)
         //    Tm_Termine_periodico (&tyt);
     }
 // Nunca deberia llegar aquí
-}
-
-ISR(TIMER1_COMPA_vect){
-	//se habilita la transmisión serial
-	banderaSerial=1;
-}
-ISR(TIMER0_COMPA_vect){
-	banderaMili=1;
-}
-ISR(INT0_vect){
-    banderaDespertar=1;
 }

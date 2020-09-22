@@ -1,6 +1,6 @@
 
-#if !defined(CONSUMO_H)
-#define CONSUMO_H
+#if !defined(SERIALU_H)
+#define SERIALU_H
 #ifdef __cplusplus
 extern "C" {
 	#endif

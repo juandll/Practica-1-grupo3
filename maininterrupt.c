@@ -11,6 +11,7 @@
 uint8_t banderaSerial=0;
 uint8_t banderaMili=0;
 uint8_t banderaDespertar=0;
+uint8_t banderaADC1=0;
 // En nuestra implementacion esta deberia ser un global 
 // si vamos a trabajar por interrupción o deberia estar en el
 // espacio de memoria del main.
@@ -55,9 +56,10 @@ void main (void)
             Tm_Procese_tiempo (&sondeoADC);
             Tm_Procese_tiempo (&sondeoDisplay);
         }
-
-        if(~(ADCSRA & (1 << ADSC)) && banderaADC2)// Interrupción lea ADC
+        
+        if(banderaADC1 && banderaADC2)// Interrupción lea ADC
         {
+            banderaADC1=0;
             DyC_Procese_ADC(&temperatura,&tempUnidades,&tempDecenas,&tempUnidadesD,&tempUnidadesC,&tempDecenasD,&tempDecenasC, &banderaADC2);
             /*en este lugar leemos el ADC y convertimos el valor leido a 
              grados y a unidades y decenas para el display
@@ -104,4 +106,7 @@ ISR(TIMER0_COMPA_vect){
 }
 ISR(INT0_vect){
     banderaDespertar=1;
+}
+ISR(ADC_vect){
+    banderaADC1=1;
 }

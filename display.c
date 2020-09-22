@@ -11,6 +11,8 @@ void D_inicie_display (D_Display *disp,int8_t *tempUnidadesD,int8_t *tempUnidade
     disp->tempDecenasD=tempDecenasD;
     disp->tempDecenasC=tempDecenasC;
     disp->mostrando=UNIDADES;
+    DDRD|= PORTDMASK;
+    DDRC|= PORTCMASK;
 }
 
 

@@ -13,6 +13,7 @@ extern "C" {
     void C_Watchdog_Function(void);
     void C_Interrupt_Enable(void);
     void C_Interrupt_Disable(void);
+    void C_Despertar(void);
 
 	#ifdef __cplusplus
 } // extern "C"
