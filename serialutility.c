@@ -24,7 +24,7 @@ char Su_Hubo_Tecla_Serial(Comunicacion *tec_enable){
     }
 }
 
-void Su_Trasmicion(int8_t *tempUnidades, int8_t *bandera, int8_t *tempDecenas){
+void Su_Transmision(int8_t *tempUnidades, int8_t *bandera, int8_t *tempDecenas){
 	UCSR0B |= (1 << RXEN0) | (1 << TXEN0);          // Se asegura que el serial este activado
 	if(*bandera==0)                                 // Condicion para saber que debe enviar
 	{

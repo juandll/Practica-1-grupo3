@@ -45,7 +45,7 @@ void main (void)
             C_Interrupt_Enable();
             Su_Atencion_Bajo_Consumo(&teclado);
         }
-        if(TIFR0 & (1 << OCF0A)// supongamos que tenemos un timer por hardware de 1 ms
+        if(TIFR0 & (1 << OCF0A))// supongamos que tenemos un timer por hardware de 1 ms
         {
             //reseteamos el timer
             Tm_Procese_tiempo (&sondeoADC);
@@ -76,7 +76,7 @@ void main (void)
         if(TIFR1 & (1 << OCF1A))// condicion de Display entra cada 
         //TIEMPODISPLAY 200 milisegundos
         {
-            Su_Trasmicion(&tempUnidades,&bandera_tx,&tempDecenas);
+            Su_Transmision(&tempUnidades,&bandera_tx,&tempDecenas);
         }
 
         if(EICRA & (1 << ISC00))//Aqui se despierta el microcontrolador de bajo consumo

@@ -83,7 +83,7 @@ void main (void)
         //TIEMPODISPLAY 200 milisegundos
         {
             banderaSerial=0;
-            Su_Trasmicion(&tempUnidades,&bandera_tx,&tempDecenas);
+            Su_Transmision(&tempUnidades,&bandera_tx,&tempDecenas);
         }
 
         if(banderaDespertar)//Aqui se despierta el microcontrolador de bajo consumo

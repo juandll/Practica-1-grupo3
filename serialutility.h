@@ -38,7 +38,7 @@ extern "C" {
 	void Su_Atencion_Bajo_Consumo(Comunicacion *com);		// Se configura el bajo consumo
 	char Su_Hubo_Tecla_Serial(Comunicacion *tec_enable);	// Revisa si se ha recibido y si se
 															// recibio guarda el valor
-	void Su_Trasmicion(int8_t *tempUnidades, int8_t *bandera, int8_t *tempDecenas);// Transmite
+	void Su_Transmision(int8_t *tempUnidades, int8_t *bandera, int8_t *tempDecenas);// Transmite
 															// unidades, decenas, centigrados y un espacio
 	void Su_Watchdog_Function(void);						// Funcion de watchdog
 	void Su_Interrupt_Enable(void);							// Habilita la interrupcion INT0
