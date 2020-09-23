@@ -9,12 +9,17 @@ void C_Power_Down(){
 	PORTC &= ~0b00001111;
 	PORTD &= ~0b11111000;
     PRR |= PMASK;                                   // Se apagan los perifericos
-    SMCR =  0X00;
+    sleep_mode(SLEEP_MODE_PWR_DOWN);
+    cli();                      //Deshabilita las interrupciones                               
+    sleep_enable();             //Habilita SE del registro de control de sleep mde
+    sei();                      //Habilita las interrupciones
+    sleep_cpu();                //Instruccion Assembler de Sleep
+    /*SMCR =  0X00;
     MCUCR = 0X00;
     SMCR = (0<<SM2) | (1<<SM1)| (0<<SM0);           // Se configura a Power Down
     SMCR |= 1;                                      // Se activa el sleep
     ADCSRA &= ~(1<<7);                              // Desabilita el ADC
-    MCUCR |= 0b01100000;                            // Desabilita BOD y los puertos
+    MCUCR |= 0b01100000;                            // Desabilita BOD y los puertos*/
 
 }
 
@@ -24,13 +29,18 @@ void C_Power_Safe(){
     wake up from either Timer Overflow */
 	PORTC &= ~0b00001111;
 	PORTD &= ~0b11111000;
-    PRR |= PMASK;                                   // Se apagan los perifericos
-    SMCR =  0X00;
+    PRR |= PMASK;                                  // Se apagan los perifericos
+    sleep_mode(SLEEP_MODE_PWR_SAFE);
+    cli();                      //Deshabilita las interrupciones                               
+    sleep_enable();             //Habilita SE del registro de control de sleep mde
+    sei();                      //Habilita las interrupciones
+    sleep_cpu();                //Instruccion Assembler de Sleep
+    /*SMCR =  0X00;
     MCUCR = 0X00;
     SMCR = (0<<SM2) | (1<<SM1)| (1<<SM0);           // Se configura a Power Save
 	SMCR |= 1;                                      // Se activa el sleep
 	ADCSRA &= ~(1<<7);                              // Desabilita el ADC
-	MCUCR |= 0b01100000;                            // Desabilita BOD y los puertos
+	MCUCR |= 0b01100000;                            // Desabilita BOD y los puertos*/
 
 }
 
@@ -41,12 +51,17 @@ void C_Standby(){
 	PORTC &= ~0b00001111;
 	PORTD &= ~0b11111000;
     PRR |= PMASK;                                   // Se apagan los perifericos
-    SMCR =  0X00;
+    sleep_mode(SLEEP_MODE_STANDBY);  
+    cli();                      //Deshabilita las interrupciones                               
+    sleep_enable();             //Habilita SE del registro de control de sleep mde
+    sei();                      //Habilita las interrupciones
+    sleep_cpu();                //Instruccion Assembler de Sleep
+    /*SMCR =  0X00;
     MCUCR = 0X00;
     SMCR = (1<<SM2) | (1<<SM1)| (0<<SM0);
 	SMCR |= 1;                                      // Se activa el sleep
 	ADCSRA &= ~(1<<7);                              // Desabilita el ADC
-	MCUCR |= 0b01100000;                            // Desabilita BOD y los puertos
+	MCUCR |= 0b01100000;                            // Desabilita BOD y los puertos*/
 }
 
 void C_Extended_Standby(){
@@ -56,12 +71,17 @@ void C_Extended_Standby(){
 	PORTC &= ~0b00001111;
 	PORTD &= ~0b11111000;
     PRR |= PMASK;                                   // Se apagan los perifericos
-    SMCR =  0X00;
+    sleep_mode(SLEEP_MODE_EXT_STANDBY); 
+    cli();                      //Deshabilita las interrupciones                               
+    sleep_enable();             //Habilita SE del registro de control de sleep mde
+    sei();                      //Habilita las interrupciones
+    sleep_cpu();                //Instruccion Assembler de Sleep 
+    /*SMCR =  0X00;
     MCUCR = 0X00;
     SMCR = (1<<SM2) | (1<<SM1)| (1<<SM0);
 	SMCR |= 1;                                      // Se activa el sleep
 	ADCSRA &= ~(1<<7);                              // Desabilita el ADC
-	MCUCR |= 0b01100000;                            // Desabilita BOD y los puertos
+	MCUCR |= 0b01100000;                            // Desabilita BOD y los puertos*/
 }
 
 /* Only one of these events can wake up the MCU:
